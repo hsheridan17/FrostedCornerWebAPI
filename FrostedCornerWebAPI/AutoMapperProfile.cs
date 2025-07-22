@@ -16,7 +16,8 @@ namespace FrostedCornerWebAPI
             CreateMap<AddOrderDto, Order>();
 
             // Item
-            CreateMap<Item, GetItemDto>();
+            CreateMap<Item, GetItemDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ItemId));
             CreateMap<AddItemDto, Item>();
 
             // OrderItem
@@ -27,6 +28,11 @@ namespace FrostedCornerWebAPI
 
             // FranchiseItem
             CreateMap<EditFranchiseItemDto, FranchiseItem>();
+            CreateMap<FranchiseItem, GetFranchiseItemDto>();
+
+            // Franchise
+            CreateMap<Franchise, GetFranchiseDto>();
+            CreateMap<AddFranchiseDto, Franchise>();
         }
     }
 }

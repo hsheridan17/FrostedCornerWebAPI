@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dtos\FranchiseItem\NewFolder\**" />
+    <Content Remove="Dtos\FranchiseItem\NewFolder\**" />
+    <EmbeddedResource Remove="Dtos\FranchiseItem\NewFolder\**" />
+    <None Remove="Dtos\FranchiseItem\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">

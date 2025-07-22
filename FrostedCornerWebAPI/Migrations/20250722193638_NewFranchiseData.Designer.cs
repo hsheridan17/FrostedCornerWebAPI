@@ -4,6 +4,7 @@ using FrostedCornerWebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FrostedCornerWebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250722193638_NewFranchiseData")]
+    partial class NewFranchiseData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,6 +110,11 @@ namespace FrostedCornerWebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -118,6 +126,10 @@ namespace FrostedCornerWebAPI.Migrations
                     b.HasKey("ItemId");
 
                     b.ToTable("Items");
+
+                    b.HasDiscriminator().HasValue("Item");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("FrostedCornerWebAPI.Models.Order", b =>
@@ -150,16 +162,15 @@ namespace FrostedCornerWebAPI.Migrations
 
             modelBuilder.Entity("FrostedCornerWebAPI.Models.OrderItem", b =>
                 {
-                    b.Property<int>("OrderItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
+                    b.HasBaseType("FrostedCornerWebAPI.Models.Item");
 
                     b.Property<int>("FranchiseItemId")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderItemId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -168,13 +179,11 @@ namespace FrostedCornerWebAPI.Migrations
                     b.Property<float>("SubTotal")
                         .HasColumnType("real");
 
-                    b.HasKey("OrderItemId");
-
                     b.HasIndex("FranchiseItemId");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.HasDiscriminator().HasValue("OrderItem");
                 });
 
             modelBuilder.Entity("FrostedCornerWebAPI.Models.DietaryRestriction", b =>
