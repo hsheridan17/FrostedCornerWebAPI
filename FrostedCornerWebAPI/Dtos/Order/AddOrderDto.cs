@@ -1,4 +1,6 @@
-﻿namespace FrostedCornerWebAPI.Dtos.Order
+﻿using FrostedCornerWebAPI.Dtos.OrderItem;
+
+namespace FrostedCornerWebAPI.Dtos.Order
 {
     public class AddOrderDto
     {
