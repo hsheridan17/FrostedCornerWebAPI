@@ -1,4 +1,6 @@
-﻿namespace FrostedCornerWebAPI.Models
+﻿using System.Globalization;
+
+namespace FrostedCornerWebAPI.Models
 {
     public class Item
     {

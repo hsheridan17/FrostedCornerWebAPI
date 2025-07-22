@@ -6,13 +6,19 @@ using FrostedCornerWebAPI.Services.OrderService;
 using Microsoft.EntityFrameworkCore;
 using System;
 
+// Installing entity framework...
+// In package manager console: Install-Package Microsoft.EntityFrameworkCore.Tools
+// Add-Migration InitialCreate
+
+
 var builder = WebApplication.CreateBuilder(args);
+Console.WriteLine($"CONNECTION STRING: {builder.Configuration.GetConnectionString("DefaultConnection")}");
 
 // Add services to the container.
 
-
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
