@@ -24,7 +24,7 @@ namespace FrostedCornerWebAPI.Controllers
         }
 
         [HttpPost("addFranchise")]
-        public async Task<ActionResult<ServiceResponse<List<GetFranchiseDto>>>> AddFranchise(AddFranchiseDto franchise)
+        public async Task<ActionResult<ServiceResponse<GetFranchiseDto>>> AddFranchise(AddFranchiseDto franchise)
         {
             return Ok(await _franchiseItemService.AddFranchise(franchise));
         }

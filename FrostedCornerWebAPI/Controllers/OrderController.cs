@@ -41,7 +41,7 @@ namespace FrostedCornerWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<GetOrderDto>>>> AddOrder(AddOrderDto order)
+        public async Task<ActionResult<ServiceResponse<GetOrderDto>>> AddOrder(AddOrderDto order)
         {
             return Ok(await _orderService.AddOrder(order));
         }
