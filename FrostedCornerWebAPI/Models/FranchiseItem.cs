@@ -18,7 +18,7 @@
             this.FranchiseId = 0;
             this.ItemId = 0;
             this.CustomColor = string.Empty;
-            this.CustomPrice = 0.0f;
+            this.CustomPrice = 0;
         }
     }
 }

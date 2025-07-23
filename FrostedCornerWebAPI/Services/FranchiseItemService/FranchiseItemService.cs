@@ -90,7 +90,8 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
                         {
                             FranchiseId = newFranchise.FranchiseId,
                             Item = item,
-                            ItemId = item.ItemId
+                            ItemId = item.ItemId,
+                            CustomPrice = item.Price
                         };
 
                         franchiseItems.Add(franchiseItem);
@@ -101,8 +102,8 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
                 await _context.SaveChangesAsync();
 
 
-                var dbFranchises = await _context.Franchises.ToListAsync();
-                serviceResponse.Data = serviceResponse.Data = _mapper.Map<GetFranchiseDto>(dbFranchises);
+                //var dbFranchises = await _context.Franchises.ToListAsync();
+                serviceResponse.Data = _mapper.Map<GetFranchiseDto>(newFranchise);
 
             } catch (Exception ex)
             {
@@ -145,7 +146,8 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
                 {
                     ItemId = itemId,
                     Item = item,
-                    FranchiseId = franchiseId
+                    FranchiseId = franchiseId,
+                    CustomPrice = item.Price
                 };
 
                 franchise.FranchiseItems!.Add(franchiseItem);
@@ -188,7 +190,8 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
                     {
                         ItemId = itemId,
                         Item = item,
-                        FranchiseId = franchise.FranchiseId
+                        FranchiseId = franchise.FranchiseId,
+                        CustomPrice = item.Price
                     };
 
                     franchise.FranchiseItems!.Add(franchiseItem);

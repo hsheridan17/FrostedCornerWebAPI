@@ -141,7 +141,7 @@ namespace FrostedCornerWebAPI.Services.OrderService
 
         public async Task<ServiceResponse<GetOrderDto>> AddOrder(AddOrderDto order)
         {
-            var serviceResponse = new ServiceResponse<List<GetOrderDto>>();
+            var serviceResponse = new ServiceResponse<GetOrderDto>();
 
             try
             {
@@ -195,14 +195,7 @@ namespace FrostedCornerWebAPI.Services.OrderService
                 _context.Orders.Add(newOrder);
                 await _context.SaveChangesAsync();
 
-                var dbOrders = await _context.Orders
-                    // Print order items too
-                    .Include(o => o.OrderItems)
-                        .ThenInclude(oi => oi.FranchiseItem)
-                    .ToListAsync();
-
-                serviceResponse.Data = dbOrders
-                    .Select(o => _mapper.Map<GetOrderDto>(o)).ToList();
+                serviceResponse.Data = _mapper.Map<GetOrderDto>(newOrder);
             }
             catch (Exception ex)
             {
