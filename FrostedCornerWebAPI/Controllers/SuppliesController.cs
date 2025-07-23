@@ -20,5 +20,11 @@ namespace FrostedCornerWebAPI.Controllers
         {
             return Ok(await _suppliesService.GetAllSuppliesOrders());
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<List<GetSuppliesOrderDto>>>> AddSuppliesOrder(AddSuppliesOrderDto order)
+        {
+            return Ok(await _suppliesService.AddSuppliesOrder(order));
+        }
     }
 }

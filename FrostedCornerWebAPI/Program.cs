@@ -1,8 +1,9 @@
-global using FrostedCornerWebAPI.Models;
 global using FrostedCornerWebAPI.Data;
+global using FrostedCornerWebAPI.Models;
 using FrostedCornerWebAPI.Services.FranchiseItemService;
 using FrostedCornerWebAPI.Services.ItemService;
 using FrostedCornerWebAPI.Services.OrderService;
+using FrostedCornerWebAPI.Services.SuppliesService;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -33,6 +34,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IFranchiseItemService, FranchiseItemService>();
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<ISuppliesService, SuppliesService>();
 
 var app = builder.Build();
 

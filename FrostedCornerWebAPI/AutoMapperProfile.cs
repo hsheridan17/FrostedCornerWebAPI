@@ -4,6 +4,7 @@ using FrostedCornerWebAPI.Dtos.OrderItem;
 using FrostedCornerWebAPI.Dtos.Item;
 using FrostedCornerWebAPI.Dtos.FranchiseItem;
 using System.Runtime;
+using FrostedCornerWebAPI.Dtos.Supplies;
 
 namespace FrostedCornerWebAPI
 {
@@ -33,6 +34,14 @@ namespace FrostedCornerWebAPI
             // Franchise
             CreateMap<Franchise, GetFranchiseDto>();
             CreateMap<AddFranchiseDto, Franchise>();
+
+            // SuppliesItem
+            CreateMap<SuppliesItem, GetSuppliesItemDto>();
+            CreateMap<AddSuppliesItemDto, SuppliesItem>();
+
+            // SuppliesOrder
+            CreateMap<SuppliesOrder, GetSuppliesOrderDto>();
+            CreateMap<AddSuppliesOrderDto, SuppliesOrder>();
         }
     }
 }

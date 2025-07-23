@@ -6,7 +6,7 @@ namespace FrostedCornerWebAPI.Dtos.Supplies
     {
         public int OrderId { get; set; }
         public GetFranchiseDto Franchise { get; set; }
-        public List<GetItemDto> Items { get; set; }
+        public List<GetSuppliesItemDto> SuppliesItemDtos { get; set; }
         public float Total { get; set; }
         public DateTime Time { get; set; }
     }

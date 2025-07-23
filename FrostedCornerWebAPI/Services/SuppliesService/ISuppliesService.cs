@@ -4,6 +4,7 @@ namespace FrostedCornerWebAPI.Services.SuppliesService
 {
     public interface ISuppliesService
     {
-        public Task<ServiceResponse<List<GetSuppliesOrderDto>>> GetAllSuppliesOrders();
+        Task<ServiceResponse<List<GetSuppliesOrderDto>>> GetAllSuppliesOrders();
+        Task<ServiceResponse<List<GetSuppliesOrderDto>>> AddSuppliesOrder(AddSuppliesOrderDto order);
     }
 }
