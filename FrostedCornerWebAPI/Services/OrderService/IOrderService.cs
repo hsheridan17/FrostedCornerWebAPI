@@ -6,6 +6,7 @@ namespace FrostedCornerWebAPI.Services.OrderService
     {
         Task<ServiceResponse<List<GetOrderDto>>> GetAllOrders();
         Task<ServiceResponse<GetOrderDto>> GetOrderById(int id);
+        Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto order);
 
     }
 }

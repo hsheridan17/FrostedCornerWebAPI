@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper;
 using FrostedCornerWebAPI.Dtos.FranchiseItem;
 using FrostedCornerWebAPI.Dtos.Item;
 using FrostedCornerWebAPI.Dtos.Order;
@@ -11,7 +12,7 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
-
+       
         public FranchiseItemService(IMapper mapper, DataContext context)
         {
             _mapper = mapper;

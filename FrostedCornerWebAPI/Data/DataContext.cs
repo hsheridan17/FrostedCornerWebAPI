@@ -14,6 +14,8 @@ namespace FrostedCornerWebAPI.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Franchise> Franchises { get; set; }
+        public DbSet<SuppliesOrder> SuppliesOrders { get; set; }
+        public DbSet<SuppliesItem> SuppliesItems { get; set; }
 
         // Configure relationships (Order has OrderItem)
 

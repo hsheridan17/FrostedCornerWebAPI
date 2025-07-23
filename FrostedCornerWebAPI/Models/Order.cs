@@ -4,6 +4,7 @@
     {
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
+        public int FranchiseId { get; set; }
         public List<OrderItem> OrderItems { get; set; }
         public OrderType OrderType { get; set; }
         public string? Address { get; set; } = string.Empty;

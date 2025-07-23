@@ -77,5 +77,76 @@ namespace FrostedCornerWebAPI.Services.OrderService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto order)
+        {
+            var serviceResponse = new ServiceResponse<List<GetOrderDto>>();
+
+            try
+            {
+                var newOrder = _mapper.Map<Order>(order);
+
+                // Need to await so there arent multiple threads
+                if (newOrder.OrderItems is not null)
+                {
+                    // For each order item in the order, need to fetch the item using ItemId
+                    foreach (var orderItem in newOrder.OrderItems)
+                    {
+                        // Get the franchise item
+                        var franchiseItem = await _context.FranchiseItems
+                            .Include(fi => fi.Item)
+                            .FirstOrDefaultAsync(fi => fi.FranchiseItemId == orderItem.FranchiseItemId);
+
+                        if (franchiseItem == null)
+                        {
+                            continue;
+                        }
+
+                        var item = await _context.Items.FirstOrDefaultAsync(i => i.ItemId == franchiseItem.ItemId);
+                        if (item is not null)
+                        {
+                            // If item exists, set the order item properties
+                            orderItem.FranchiseItem = franchiseItem;
+                            if (franchiseItem.CustomPrice != null && franchiseItem.CustomPrice != 0)
+                            {
+                                // If custom price is set, use that
+                                orderItem.SubTotal = franchiseItem.CustomPrice * orderItem.Quantity;
+                            }
+                            else
+                            {
+                                // Otherwise, use the item's price
+                                orderItem.SubTotal = item.Price * orderItem.Quantity;
+                            }
+
+                            newOrder.Total += orderItem.SubTotal;
+                        }
+                    }
+                }
+
+                DateTime time = DateTime.Now;
+                newOrder.Time = time;
+
+                // Set delivery address
+                newOrder.Address = order.Address;
+
+                _context.Orders.Add(newOrder);
+                await _context.SaveChangesAsync();
+
+                var dbOrders = await _context.Orders
+                    // Print order items too
+                    .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.FranchiseItem)
+                    .ToListAsync();
+
+                serviceResponse.Data = dbOrders
+                    .Select(o => _mapper.Map<GetOrderDto>(o)).ToList();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
     }
 }
