@@ -31,6 +31,7 @@ namespace FrostedCornerWebAPI.Services.OrderService
                     // associated Items are displayed as well
                     .Include(o => o.OrderItems)
                         .ThenInclude(oi => oi.FranchiseItem)
+                            .ThenInclude(fi=>fi.Item)
                     .ToListAsync();
 
                 serviceResponse.Data = dbOrders.Select(order => _mapper.Map<GetOrderDto>(order)).ToList();
@@ -138,7 +139,7 @@ namespace FrostedCornerWebAPI.Services.OrderService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto order)
+        public async Task<ServiceResponse<GetOrderDto>> AddOrder(AddOrderDto order)
         {
             var serviceResponse = new ServiceResponse<List<GetOrderDto>>();
 
@@ -167,6 +168,8 @@ namespace FrostedCornerWebAPI.Services.OrderService
                         {
                             // If item exists, set the order item properties
                             orderItem.FranchiseItem = franchiseItem;
+                            orderItem.Order = newOrder;
+
                             if (franchiseItem.CustomPrice != null && franchiseItem.CustomPrice != 0)
                             {
                                 // If custom price is set, use that

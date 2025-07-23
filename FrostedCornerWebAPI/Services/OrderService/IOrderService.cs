@@ -8,7 +8,7 @@ namespace FrostedCornerWebAPI.Services.OrderService
         Task<ServiceResponse<GetOrderDto>> GetOrderById(int id);
         Task<ServiceResponse<GetOrderDto>> GetOrderByCustomerId(int customerId);
         Task<ServiceResponse<GetOrderDto>> GetOrdersByFranchiseId(int franchiseId);
-        Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto order);
+        Task<ServiceResponse<GetOrderDto>> AddOrder(AddOrderDto order);
 
     }
 }

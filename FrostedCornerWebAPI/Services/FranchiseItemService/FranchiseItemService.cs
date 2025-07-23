@@ -70,9 +70,9 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetFranchiseDto>>> AddFranchise(AddFranchiseDto franchise)
+        public async Task<ServiceResponse<GetFranchiseDto>> AddFranchise(AddFranchiseDto franchise)
         {
-            var serviceResponse = new ServiceResponse<List<GetFranchiseDto>>();
+            var serviceResponse = new ServiceResponse<GetFranchiseDto>();
 
             try
             {
@@ -102,7 +102,7 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
 
 
                 var dbFranchises = await _context.Franchises.ToListAsync();
-                serviceResponse.Data = serviceResponse.Data = _mapper.Map<List<GetFranchiseDto>>(dbFranchises);
+                serviceResponse.Data = serviceResponse.Data = _mapper.Map<GetFranchiseDto>(dbFranchises);
 
             } catch (Exception ex)
             {

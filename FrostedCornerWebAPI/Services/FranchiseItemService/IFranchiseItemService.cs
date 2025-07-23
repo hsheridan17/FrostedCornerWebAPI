@@ -6,7 +6,7 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
     {
         public Task<ServiceResponse<List<GetFranchiseDto>>> GetAllFranchises();
         public Task<ServiceResponse<GetFranchiseDto>> GetFranchiseById(int franchiseId);
-        public Task<ServiceResponse<List<GetFranchiseDto>>> AddFranchise(AddFranchiseDto franchise);
+        public Task<ServiceResponse<GetFranchiseDto>> AddFranchise(AddFranchiseDto franchise);
 
         public Task<ServiceResponse<GetFranchiseDto>> AddFranchiseItem(int franchiseId, int itemId);
         public Task<ServiceResponse<List<GetFranchiseDto>>> AddItemToAllFranchises(int itemId);
