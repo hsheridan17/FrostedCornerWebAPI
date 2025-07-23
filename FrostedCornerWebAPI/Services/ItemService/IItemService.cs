@@ -1,4 +1,5 @@
-﻿using FrostedCornerWebAPI.Dtos.Item;
+﻿using FrostedCornerWebAPI.Dtos.FranchiseItem;
+using FrostedCornerWebAPI.Dtos.Item;
 
 namespace FrostedCornerWebAPI.Services.ItemService
 {
@@ -11,5 +12,7 @@ namespace FrostedCornerWebAPI.Services.ItemService
         public Task<ServiceResponse<List<GetItemDto>>> AddItem(AddItemDto item);
 
         public Task<ServiceResponse<List<GetItemDto>>> RemoveItemById(long id);
+
+        public Task<ServiceResponse<List<GetItemDto>>> GetItemsByType(ItemType type);
     }
 }

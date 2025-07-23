@@ -27,7 +27,7 @@ namespace FrostedCornerWebAPI.Controllers
             return Ok(await _itemService.GetItemById(id));
         }
 
-        [HttpPost]
+        [HttpPost("")]
         public async Task<ActionResult<ServiceResponse<List<GetItemDto>>>> AddItem(AddItemDto item)
         {
             return Ok(await _itemService.AddItem(item));
@@ -37,6 +37,12 @@ namespace FrostedCornerWebAPI.Controllers
         public async Task<ActionResult<ServiceResponse<List<GetItemDto>>>> RemoveItem(long id)
         {
             return Ok(await _itemService.RemoveItemById(id));
+        }
+
+        [HttpGet("type/{type}")]
+        public async Task<ActionResult<ServiceResponse<List<GetItemDto>>>> GetItemsByType(ItemType type)
+        {
+            return Ok(await _itemService.GetItemsByType(type));
         }
     }
 }

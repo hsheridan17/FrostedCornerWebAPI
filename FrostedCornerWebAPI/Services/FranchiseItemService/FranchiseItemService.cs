@@ -28,10 +28,40 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
                 var dbFranchises = await _context.Franchises
                     .Include(f => f.FranchiseItems)
                         .ThenInclude(i => i.Item)
+                        .ThenInclude(d=>d.DietaryRestrictions)
                     .ToListAsync();
 
                 serviceResponse.Data = dbFranchises.Select(franchise => _mapper.Map<GetFranchiseDto>(franchise)).ToList();
             } catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetFranchiseDto>> GetFranchiseById(int franchiseId)
+        {
+            var serviceResponse = new ServiceResponse<GetFranchiseDto>();
+
+            try
+            {
+                var franchise = await _context.Franchises
+                    .Include(fi=>fi.FranchiseItems)
+                        .ThenInclude(i=>i.Item)
+                    .FirstOrDefaultAsync(f => f.FranchiseId == franchiseId);
+
+                if (franchise == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Item not found.";
+                    return serviceResponse;
+                }
+
+                serviceResponse.Data = _mapper.Map<GetFranchiseDto>(franchise);
+            }
+            catch (Exception ex)
             {
                 serviceResponse.Success = false;
                 serviceResponse.Message = ex.Message;
@@ -54,18 +84,25 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
                 List<FranchiseItem> franchiseItems = new List<FranchiseItem>();
                 foreach (var item in menu)
                 {
-                    FranchiseItem franchiseItem = new FranchiseItem
+                    if (item.ItemType == ItemType.Food)
                     {
-                        FranchiseId = newFranchise.FranchiseId,
-                        Item = item,
-                        ItemId = item.ItemId
-                    };
+                        FranchiseItem franchiseItem = new FranchiseItem
+                        {
+                            FranchiseId = newFranchise.FranchiseId,
+                            Item = item,
+                            ItemId = item.ItemId
+                        };
 
-                    franchiseItems.Add(franchiseItem);
+                        franchiseItems.Add(franchiseItem);
+                    }
                 }
 
                 _context.FranchiseItems.AddRange(franchiseItems);
                 await _context.SaveChangesAsync();
+
+
+                var dbFranchises = await _context.Franchises.ToListAsync();
+                serviceResponse.Data = serviceResponse.Data = _mapper.Map<List<GetFranchiseDto>>(dbFranchises);
 
             } catch (Exception ex)
             {
@@ -114,7 +151,7 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
                 franchise.FranchiseItems!.Add(franchiseItem);
 
                 await _context.SaveChangesAsync();
-                var dbOrders = await _context.Orders.ToListAsync();
+                var dbFranchises = await _context.Franchises.ToListAsync();
                 serviceResponse.Data = _mapper.Map<GetFranchiseDto>(franchise);
 
 
@@ -127,11 +164,56 @@ namespace FrostedCornerWebAPI.Services.FranchiseItemService
             return serviceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetFranchiseDto>>> AddItemToAllFranchises(int itemId)
+        {
+            var serviceResponse = new ServiceResponse<List<GetFranchiseDto>>();
+
+            try
+            {
+                var item = await _context.Items
+                    .FirstOrDefaultAsync(i => i.ItemId == itemId);
+
+                // Make sure item exists and is a food item
+                if (item is null || item.ItemType == ItemType.Supply)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Food item with that Id not found.";
+                    return serviceResponse;
+                }
+
+                var franchises = await _context.Franchises.ToListAsync();
+                foreach (var franchise in franchises)
+                {
+                    FranchiseItem franchiseItem = new FranchiseItem
+                    {
+                        ItemId = itemId,
+                        Item = item,
+                        FranchiseId = franchise.FranchiseId
+                    };
+
+                    franchise.FranchiseItems!.Add(franchiseItem);
+                }
+
+                await _context.SaveChangesAsync();
+                var dbFranchises = await _context.Franchises.ToListAsync();
+                serviceResponse.Data = _mapper.Map<List<GetFranchiseDto>>(dbFranchises);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+                return serviceResponse;
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<GetFranchiseItemDto>> EditFranchiseItem(EditFranchiseItemDto updatedFranchiseItem)
         {
             var serviceResponse = new ServiceResponse<GetFranchiseItemDto>();
 
-            var item = await _context.FranchiseItems.FirstOrDefaultAsync(i => i.ItemId == updatedFranchiseItem.ItemId);
+            var item = await _context.FranchiseItems.FirstOrDefaultAsync(i => i.ItemId == updatedFranchiseItem.ItemId
+                                                                         && i.FranchiseId == updatedFranchiseItem.FranchiseId);
             if (item == null)
             {
                 serviceResponse.Success = false;

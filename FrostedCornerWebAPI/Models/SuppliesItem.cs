@@ -9,5 +9,13 @@
         public int Quantity { get; set; }
         public float SubTotal { get; set; }
 
+        public SuppliesItem()
+        {
+            this.SuppliesItemId = 0;
+            this.OrderId = 0;
+            this.ItemId = 0;
+            this.Quantity = 0;
+            this.SubTotal = 0;
+        }
     }
 }

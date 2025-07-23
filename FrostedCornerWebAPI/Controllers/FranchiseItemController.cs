@@ -29,10 +29,16 @@ namespace FrostedCornerWebAPI.Controllers
             return Ok(await _franchiseItemService.AddFranchise(franchise));
         }
 
-        [HttpPost("addItem")]
+        [HttpPost("addItem/{franchiseId}/{itemId}")]
         public async Task<ActionResult<ServiceResponse<GetFranchiseDto>>> AddFranchiseItem(int franchiseId, int itemId)
         {
             return Ok(await _franchiseItemService.AddFranchiseItem(franchiseId, itemId));
+        }
+
+        [HttpPost("addToAllFranchises/{itemId}")]
+        public async Task<ActionResult<ServiceResponse<List<GetFranchiseDto>>>> AddItemToAllFranchises(int itemId)
+        {
+            return Ok(await _franchiseItemService.AddItemToAllFranchises(itemId));
         }
 
 
@@ -40,6 +46,12 @@ namespace FrostedCornerWebAPI.Controllers
         public async Task<ActionResult<ServiceResponse<GetFranchiseItemDto>>> EditFranchiseItem(EditFranchiseItemDto updatedFranchiseItem)
         {
             return Ok(await _franchiseItemService.EditFranchiseItem(updatedFranchiseItem));
+        }
+
+        [HttpGet("{franchiseId}")]
+        public async Task<ActionResult<ServiceResponse<GetFranchiseDto>>> GetFranchiseById(int franchiseId)
+        {
+            return Ok(await _franchiseItemService.GetFranchiseById(franchiseId));
         }
     }
 }

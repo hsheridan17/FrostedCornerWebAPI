@@ -42,6 +42,10 @@ namespace FrostedCornerWebAPI
             // SuppliesOrder
             CreateMap<SuppliesOrder, GetSuppliesOrderDto>();
             CreateMap<AddSuppliesOrderDto, SuppliesOrder>();
+
+            // DietaryRestriction
+            CreateMap<DietaryRestriction, GetDietaryRestrictionDto>();
+            CreateMap<AddDietaryRestrictionDto, DietaryRestriction>();
         }
     }
 }

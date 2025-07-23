@@ -76,6 +76,67 @@ namespace FrostedCornerWebAPI.Services.OrderService
 
             return serviceResponse;
         }
+        public async Task<ServiceResponse<GetOrderDto>> GetOrdersByFranchiseId(int franchiseId)
+        {
+            var serviceResponse = new ServiceResponse<GetOrderDto>();
+
+            try
+            {
+                var order = await _context.Orders
+                       .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.FranchiseItem)
+                    .FirstOrDefaultAsync(o => o.FranchiseId == franchiseId);
+
+                // Check if the given order exists
+                if (order == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Order not found.";
+                    return serviceResponse;
+                }
+
+                // Order exists, map to dto
+                serviceResponse.Data = _mapper.Map<GetOrderDto>(order);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetOrderDto>> GetOrderByCustomerId(int customerId)
+        {
+            var serviceResponse = new ServiceResponse<GetOrderDto>();
+
+            try
+            {
+                var order = await _context.Orders
+                       .Include(o => o.OrderItems)
+                        .ThenInclude(oi => oi.FranchiseItem)
+                    .FirstOrDefaultAsync(o => o.CustomerId == customerId);
+
+                // Check if the given order exists
+                if (order == null)
+                {
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Order not found.";
+                    return serviceResponse;
+                }
+
+                // Order exists, map to dto
+                serviceResponse.Data = _mapper.Map<GetOrderDto>(order);
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+
+            return serviceResponse;
+        }
 
         public async Task<ServiceResponse<List<GetOrderDto>>> AddOrder(AddOrderDto order)
         {

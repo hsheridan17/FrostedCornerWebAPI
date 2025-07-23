@@ -28,6 +28,18 @@ namespace FrostedCornerWebAPI.Controllers
             return Ok(await _orderService.GetOrderById(id));
         }
 
+        [HttpGet("customer/{customerId}")]
+        public async Task<ActionResult<ServiceResponse<GetOrderDto>>> GetOrderByCustomerId(int customerId)
+        {
+            return Ok(await _orderService.GetOrderByCustomerId(customerId));
+        }
+
+        [HttpGet("franchise/{franchiseId}")]
+        public async Task<ActionResult<ServiceResponse<GetOrderDto>>> GetOrdersByFranchiseId(int franchiseId)
+        {
+            return Ok(await _orderService.GetOrdersByFranchiseId(franchiseId));
+        }
+
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<GetOrderDto>>>> AddOrder(AddOrderDto order)
         {

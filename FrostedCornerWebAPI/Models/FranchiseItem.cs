@@ -6,16 +6,17 @@
     public class FranchiseItem
     {
         public int FranchiseItemId { get; set; } 
-        public int FranchiseId { get; set; } // Identifier for the associated franchise
+        public int FranchiseId { get; set; } 
         public Franchise Franchise { get; set; }
-        public int ItemId { get; set; } // Identifier for the associated menu item
+        public int ItemId { get; set; }
         public Item Item { get; set; }
-        public string CustomColor { get; set; } // Customizations for the item, e.g., "No nuts, extra frosting"
-        public float CustomPrice { get; set; } // Price of the franchise item
+        public string CustomColor { get; set; } 
+        public float CustomPrice { get; set; }
         public FranchiseItem()
         {
             this.FranchiseItemId = 0;
-           //  this.ItemId = 0;
+            this.FranchiseId = 0;
+            this.ItemId = 0;
             this.CustomColor = string.Empty;
             this.CustomPrice = 0.0f;
         }

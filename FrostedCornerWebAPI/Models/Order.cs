@@ -15,6 +15,7 @@
         {
             this.OrderId = 0;
             this.CustomerId = 0;
+            this.FranchiseId = 0;
             this.OrderItems = new List<OrderItem>();
             this.OrderType = OrderType.Pickup;
             this.Total = 0.0f;

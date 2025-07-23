@@ -43,6 +43,20 @@ namespace FrostedCornerWebAPI.Services.ItemService
         {
             var serviceResponse = new ServiceResponse<List<GetItemDto>>();
             var newItem = _mapper.Map<Item>(itemDto);
+
+            // Handle dietary restrictions
+            newItem.DietaryRestrictions = new List<DietaryRestriction>();
+            foreach (var drDto in itemDto.DietaryRestrictions)
+            {
+                var dr = await _context.DietaryRestrictions
+                    .FirstOrDefaultAsync(d => d.DietaryRestrictionId == drDto.DietaryRestrictionId);
+                if (dr != null)
+                {
+                    newItem.DietaryRestrictions.Add(dr);
+                }
+            }
+            
+            // Add new item
             _context.Items.Add(newItem);
             await _context.SaveChangesAsync();
 
@@ -66,6 +80,14 @@ namespace FrostedCornerWebAPI.Services.ItemService
 
             var dbItems = await _context.Items.ToListAsync();
             serviceResponse.Data = dbItems.Select(i => _mapper.Map<GetItemDto>(i)).ToList();
+            return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<List<GetItemDto>>> GetItemsByType(ItemType type)
+        {
+            var serviceResponse = new ServiceResponse<List<GetItemDto>>();
+            var dbItems = await _context.Items.Where(i=>i.ItemType == type).ToListAsync();
+            serviceResponse.Data = dbItems.Select(item => _mapper.Map<GetItemDto>(item)).ToList();
             return serviceResponse;
         }
     }
