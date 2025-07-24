@@ -38,17 +38,6 @@ builder.Services.AddScoped<IFranchiseItemService, FranchiseItemService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<ISuppliesService, SuppliesService>();
 
-// CORS service
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

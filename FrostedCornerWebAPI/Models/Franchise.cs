@@ -13,6 +13,7 @@
             this.FranchiseName = string.Empty;
             this.Address = string.Empty;
             this.FranchiseItems = new List<FranchiseItem>();
+
         }
     }
 }
