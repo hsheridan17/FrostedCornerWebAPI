@@ -36,15 +36,6 @@ builder.Services.AddScoped<IFranchiseItemService, FranchiseItemService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<ISuppliesService, SuppliesService>();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 // CORS service
 builder.Services.AddCors(options =>
 {
@@ -55,6 +46,16 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 
 app.UseHttpsRedirection();
 

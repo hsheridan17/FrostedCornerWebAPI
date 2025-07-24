@@ -28,6 +28,10 @@ namespace FrostedCornerWebAPI.Data
                 .WithMany(fi => fi.FranchiseItems)
                 .HasForeignKey(id => id.FranchiseId);
 
+            modelBuilder.Entity<Item>()
+               .HasMany(i => i.DietaryRestrictions)
+               .WithMany();
+
             modelBuilder.Entity<DietaryRestriction>().HasData(
                 new DietaryRestriction { DietaryRestrictionId = 1, Name = "Vegan" },
                 new DietaryRestriction { DietaryRestrictionId = 2, Name = "Vegetarian" },

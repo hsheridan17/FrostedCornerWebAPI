@@ -4,6 +4,7 @@ using FrostedCornerWebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FrostedCornerWebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250724005203_AddImageId")]
+    partial class AddImageId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace FrostedCornerWebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DietaryRestrictionItem", b =>
-                {
-                    b.Property<int>("DietaryRestrictionsDietaryRestrictionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DietaryRestrictionsDietaryRestrictionId", "ItemId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("DietaryRestrictionItem");
-                });
 
             modelBuilder.Entity("FrostedCornerWebAPI.Models.DietaryRestriction", b =>
                 {
@@ -45,11 +33,16 @@ namespace FrostedCornerWebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DietaryRestrictionId"));
 
+                    b.Property<int?>("ItemId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DietaryRestrictionId");
+
+                    b.HasIndex("ItemId");
 
                     b.ToTable("DietaryRestrictions");
 
@@ -283,19 +276,11 @@ namespace FrostedCornerWebAPI.Migrations
                     b.ToTable("SuppliesOrders");
                 });
 
-            modelBuilder.Entity("DietaryRestrictionItem", b =>
+            modelBuilder.Entity("FrostedCornerWebAPI.Models.DietaryRestriction", b =>
                 {
-                    b.HasOne("FrostedCornerWebAPI.Models.DietaryRestriction", null)
-                        .WithMany()
-                        .HasForeignKey("DietaryRestrictionsDietaryRestrictionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FrostedCornerWebAPI.Models.Item", null)
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("DietaryRestrictions")
+                        .HasForeignKey("ItemId");
                 });
 
             modelBuilder.Entity("FrostedCornerWebAPI.Models.FranchiseItem", b =>
@@ -365,6 +350,11 @@ namespace FrostedCornerWebAPI.Migrations
             modelBuilder.Entity("FrostedCornerWebAPI.Models.Franchise", b =>
                 {
                     b.Navigation("FranchiseItems");
+                });
+
+            modelBuilder.Entity("FrostedCornerWebAPI.Models.Item", b =>
+                {
+                    b.Navigation("DietaryRestrictions");
                 });
 
             modelBuilder.Entity("FrostedCornerWebAPI.Models.Order", b =>

@@ -22,6 +22,7 @@ namespace FrostedCornerWebAPI.Services.SuppliesService
             try
             {
                 var dbSuppliesOrders = await _context.SuppliesOrders
+                    .Include(o=>o.Franchise)
                     // This will make sure that OrderItems and their
                     // associated Items are displayed as well
                     .Include(si => si.SuppliesItems)

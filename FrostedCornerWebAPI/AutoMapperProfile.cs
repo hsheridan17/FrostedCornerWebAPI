@@ -40,7 +40,8 @@ namespace FrostedCornerWebAPI
             CreateMap<AddSuppliesItemDto, SuppliesItem>();
 
             // SuppliesOrder
-            CreateMap<SuppliesOrder, GetSuppliesOrderDto>();
+            CreateMap<SuppliesOrder, GetSuppliesOrderDto>()
+                .ForMember(dest => dest.SuppliesItems, opt => opt.MapFrom(src => src.SuppliesItems));
             CreateMap<AddSuppliesOrderDto, SuppliesOrder>();
 
             // DietaryRestriction
