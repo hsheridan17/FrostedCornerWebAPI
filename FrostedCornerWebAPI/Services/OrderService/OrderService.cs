@@ -77,19 +77,21 @@ namespace FrostedCornerWebAPI.Services.OrderService
 
             return serviceResponse;
         }
-        public async Task<ServiceResponse<GetOrderDto>> GetOrdersByFranchiseId(int franchiseId)
+        public async Task<ServiceResponse<List<GetOrderDto>>> GetOrdersByFranchiseId(int franchiseId)
         {
-            var serviceResponse = new ServiceResponse<GetOrderDto>();
+            var serviceResponse = new ServiceResponse<List<GetOrderDto>>();
 
             try
             {
-                var order = await _context.Orders
+                var orders = await _context.Orders
                        .Include(o => o.OrderItems)
                         .ThenInclude(oi => oi.FranchiseItem)
-                    .FirstOrDefaultAsync(o => o.FranchiseId == franchiseId);
+                            .ThenInclude(fi => fi.Item)
+                       .Where(o => o.FranchiseId == franchiseId)
+                       .ToListAsync();
 
                 // Check if the given order exists
-                if (order == null)
+                if (orders == null)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Order not found.";
@@ -97,7 +99,8 @@ namespace FrostedCornerWebAPI.Services.OrderService
                 }
 
                 // Order exists, map to dto
-                serviceResponse.Data = _mapper.Map<GetOrderDto>(order);
+                serviceResponse.Data = orders.Select(o => _mapper.Map<GetOrderDto>(o)).ToList();
+                serviceResponse.Success = true;
             }
             catch (Exception ex)
             {
@@ -108,19 +111,21 @@ namespace FrostedCornerWebAPI.Services.OrderService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetOrderDto>> GetOrderByCustomerId(int customerId)
+        public async Task<ServiceResponse<List<GetOrderDto>>> GetOrdersByCustomerId(int customerId)
         {
-            var serviceResponse = new ServiceResponse<GetOrderDto>();
+            var serviceResponse = new ServiceResponse<List<GetOrderDto>>();
 
             try
             {
-                var order = await _context.Orders
+                var orders = await _context.Orders
                        .Include(o => o.OrderItems)
                         .ThenInclude(oi => oi.FranchiseItem)
-                    .FirstOrDefaultAsync(o => o.CustomerId == customerId);
+                            .ThenInclude(fi => fi.Item)
+                    .Where(o => o.CustomerId == customerId)
+                    .ToListAsync();
 
                 // Check if the given order exists
-                if (order == null)
+                if (orders == null)
                 {
                     serviceResponse.Success = false;
                     serviceResponse.Message = "Order not found.";
@@ -128,7 +133,8 @@ namespace FrostedCornerWebAPI.Services.OrderService
                 }
 
                 // Order exists, map to dto
-                serviceResponse.Data = _mapper.Map<GetOrderDto>(order);
+                serviceResponse.Data = orders.Select(o => _mapper.Map<GetOrderDto>(o)).ToList();
+                serviceResponse.Success = true;
             }
             catch (Exception ex)
             {
